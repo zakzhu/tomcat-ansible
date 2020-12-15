@@ -1,8 +1,19 @@
 ---
-# Below is a code example
-- name: <r_common_t_common> test task
-  debug:
+- name: "<r_common_t_common> create a symbolic link to {{ deploy_root }}/{{ package['alias'] }}"
+  file:
+    src: "{{ deploy_root }}/install/{{ package_fullname }}"
+    dest: "{{ deploy_root }}/{{ package['alias'] }}"
+    #owner:
+    #group:
+    #mode:
+    state: link
 
-- name: <r_common_t_common> test trigger handler
-  command: echo
-  notify: "({{ role_name }}) hello world"
+- name: "<r_common_t_common> template a file to /etc/profile.d/{{ package['alias'] }}.sh"
+  template:
+    src: "{{ package['alias'] }}.sh.j2"
+    dest: "/etc/profile.d/{{ package['alias'] }}.sh"
+    owner: root
+    group: root
+    mode: "0644"
+    #validate:
+    #backup: yes
